@@ -1,5 +1,5 @@
 ---
-title: "My Final Project"
+title: "Change in music trend from 1920-2020"
 author: "My Name, Team mates names"
 date: "Last updated on `r Sys.Date()`"
 output:
@@ -8,24 +8,25 @@ output:
     toc_depth: 2
     toc_float: true
     df_print: kable
+    code_folding: hide
+
 ---
 
 <!--
 Comments in HTML are like this! 
 -->
 
-# SECTION NAME
+# Song Energy
 
 Write your blog post here.
 
-```{r message=FALSE}
+```{r message = FALSE,warning=FALSE}
 library(tidyverse)
 library(plotly)
 
 spotify_data <- read_csv("data.csv")
-```
 
-```{r}
+
 decade_detect <- function(year) (floor(year/10)*10)
 
 get_density <- function(data) data.frame(density(data$energy)$x,density(data$energy)$y)
