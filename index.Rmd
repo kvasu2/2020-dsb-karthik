@@ -17,3 +17,48 @@ Comments in HTML are like this!
 # SECTION NAME
 
 Write your blog post here.
+
+```{r message=FALSE}
+library(tidyverse)
+library(plotly)
+
+spotify_data <- read_csv("data.csv")
+```
+
+```{r}
+decade_detect <- function(year) (floor(year/10)*10)
+
+get_density <- function(data) data.frame(density(data$energy)$x,density(data$energy)$y)
+
+
+df <- spotify_data %>%
+        filter(year<2020) %>% 
+        mutate(decade=decade_detect(year)) %>%
+        group_by(decade) %>% 
+        nest() %>%
+        mutate(dens = map(data,get_density)) %>% 
+        unnest(dens)
+
+ax <- list(title = "Energy (higher value = higher energy)",
+           zeroline=FALSE,
+           range = c(0,1))
+ay <- list(title = "Density")
+
+fig <- df %>%
+  plot_ly(
+    x = ~df$density.data.energy..x,
+    y = ~df$density.data.energy..y,
+    type = 'scatter',
+    mode = 'lines',
+    frame=~df$decade,
+    showlegend = FALSE
+  )
+fig <- fig %>% 
+          layout(xaxis = ax, yaxis = ay) %>% 
+          animation_slider(
+            currentvalue = list(prefix = "Decade ",
+                                suffix="s",
+                                font = list(color="blue"))
+            )
+fig
+```
