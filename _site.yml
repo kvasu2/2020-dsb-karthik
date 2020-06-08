@@ -14,9 +14,9 @@ output:
     self_contained: no
 # All fa icons were obtained from https://fontawesome.com/icons?d=gallery
 navbar:
-  title: "Final Project Title"
+  title: "2020 DSB Final Project"
   left:
     - text: "Blogpost"
       href: index.html
-    - text: "More info"
-      href: more_info.html
+    - text: "About Data"
+      href: about_data.html

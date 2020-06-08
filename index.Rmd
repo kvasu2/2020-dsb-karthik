@@ -67,7 +67,38 @@ fig
 
 
 
-# new section
+## Energy vs Popularity
 
+Given that there are more and more song that have high energy a natural assumption to make is that the these songs are more popular than the low energy songs. But this is not the case according to the data. From the following plot we can see that the popularity is constant as the energy varies. This means that lower energy songs are equally as popular as high energy one even though there are a lot of the latter being released released
 
-Another section
+```{r message = FALSE,warning=FALSE}
+
+df1 <- spotify_data %>% 
+        filter(year<2020) %>% 
+        mutate(decade=decade_detect(year))
+
+ax <- list(title = "Energy (higher value = higher energy)",
+           zeroline=FALSE,
+           range = c(0,1))
+ay <- list(title = "Popularity")
+
+fig <- df1 %>%
+          plot_ly(x = ~df1$energy,
+                  y = ~df1$popularity,
+                  type = 'scatter',
+                  frame=~df1$decade,
+                  showlegend = FALSE
+                  )
+
+fig <- fig %>% 
+          layout(xaxis = ax, yaxis = ay) %>% 
+          animation_slider(
+            currentvalue = list(prefix = "Decade ",
+                                suffix="s",
+                                font = list(color="blue"))
+            )
+
+fig
+```
+
+Remark: We can observe that the average popularity of songs go up as we go through the decades. This is because the popularity refers to current popularity and not when the song was released.
