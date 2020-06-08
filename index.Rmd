@@ -1,6 +1,6 @@
 ---
-title: "Change in music trend from 1920-2020"
-author: "My Name, Team mates names"
+title: "Music trend (1920-2020)"
+author: "Tyler Billingsley, Danni Huang, Ted Tranel, Karthik Vasu, Alyssa Whittemore"
 date: "Last updated on `r Sys.Date()`"
 output:
   html_document:
@@ -18,7 +18,7 @@ Comments in HTML are like this!
 
 # Song Energy
 
-Write your blog post here.
+The following plot is the distribution of energy songs for a decade from 1920s to 2010s. We observe that prior to the 1960s most of the songs that were realeased had low energy. The curve flattened out in the following two decades and slowing started skewing towadrs high energy. From this trend we can predict that in 2020 there will be more songs with higher energy than lower energy.
 
 ```{r message = FALSE,warning=FALSE}
 library(tidyverse)
@@ -63,3 +63,11 @@ fig <- fig %>%
             )
 fig
 ```
+
+
+
+
+# new section
+
+
+Another section
