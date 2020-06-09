@@ -18,7 +18,7 @@ Comments in HTML are like this!
 
 # Notable Trends in attributes of Spotify songs
 
-How can we tell how music is changing? What types of music trends are happening? These are the questions for which we wanted to find answers. It would be fairly difficult analyzing music by listening to thousands (or even hundreds) of songs, but luckily for us, Spotify shares lots of data. Yamaç Eren Ay posted a [data set](https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks) on the website Kaggel, which included data for more than 160 thousand songs all from Spotify. This data includes songs from 1921 up to 2020, and looks at a number of different variables for each song. Our goal is to analyze how these factors have changed for music since 1921 with an emphasis on how music has been changing in the last decade.
+How can we tell how music is changing? What types of music trends are happening? These are the questions for which we wanted to find answers. It would be fairly difficult analyzing music by listening to thousands (or even hundreds) of songs, but luckily for us, Spotify shares lots of data. Yamaç Eren Ay posted a [data set](https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks) on the website Kaggle, which included data for more than 160 thousand songs all from Spotify. This data includes songs from 1921 up to 2020, and looks at a number of different variables for each song. Our goal is to analyze how these factors have changed for music since 1921 with an emphasis on how music has been changing in the last decade.
 
 
 # Song Energy
