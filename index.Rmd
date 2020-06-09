@@ -16,7 +16,7 @@ output:
 Comments in HTML are like this! 
 -->
 
-# Title
+# Notable Trends in attributes of Spotify songs
 
 How can we tell how music is changing? What types of music trends are happening? These are the questions for which we wanted to find answers. It would be fairly difficult analyzing music by listening to thousands (or even hundreds) of songs, but luckily for us, Spotify shares lots of data. Yamaç Eren Ay posted a [data set](https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks) on the website Kaggel, which included data for more than 160 thousand songs all from Spotify. This data includes songs from 1921 up to 2020, and looks at a number of different variables for each song. Our goal is to analyze how these factors have changed for music since 1921 with an emphasis on how music has been changing in the last decade.
 
@@ -80,8 +80,7 @@ Given that there are more and more song that have high energy a natural assumpti
 ```{r message = FALSE,warning=FALSE}
 
 df1 <- spotify_data %>% 
-        filter(year<2020) %>% 
-        mutate(decade=decade_detect(year))
+        filter(year>2009,year<2020)
 
 ax <- list(title = "Energy (higher value = higher energy)",
            zeroline=FALSE,
@@ -92,15 +91,14 @@ fig <- df1 %>%
           plot_ly(x = ~df1$energy,
                   y = ~df1$popularity,
                   type = 'scatter',
-                  frame=~df1$decade,
+                  frame=~df1$year,
                   showlegend = FALSE
                   )
 
 fig <- fig %>% 
           layout(xaxis = ax, yaxis = ay) %>% 
           animation_slider(
-            currentvalue = list(prefix = "Decade ",
-                                suffix="s",
+            currentvalue = list(prefix = "Year ",
                                 font = list(color="blue"))
             )
 
@@ -120,7 +118,9 @@ Remark: We can observe that the average popularity of songs go up as we go throu
 
 Consider the graph below that shows how the average acousticness of music has changed over the years. Acousticness is defined to be the chance that a track is acoustic.
 ```{r message = FALSE,warning=FALSE}
-
+library(tidyverse)
+library(scales)
+library(gridExtra)
 data <- read_csv("data.csv")
 data_by_year <- read_csv("data_by_year.csv")
 data_2010s <- data %>% 
@@ -132,7 +132,6 @@ data_2010s_a <- data_2010s %>%
 data_2010s_pa <- semi_join(data_2010s_p, data_2010s_a) %>% 
   mutate(clean_artists = str_sub(artists, 3, -3))
 data_2010s_pa$year <- factor(data_2010s_pa$year, ordered = is.ordered(data_2010s_pa$year))
-
 data_by_year %>% 
   ggplot() +
     geom_smooth(mapping = aes(x = year, y = acousticness, color = "red")) +
@@ -141,9 +140,13 @@ data_by_year %>%
          title = "Acousticness over time",
          subtitle = "Years 1920-2020")
 ```
-Notice that there has been a recent increase in acousticness. To investigate this further, we examined just the data for 2010-2019, the most recent complete decade. The graph below shows that the songs in the top 10% of both acousticness and popularity for this decade all occurred late in the decade, coinciding with the overall increase in acousticness.
+
+
+Notice that there has been a recent increase in acousticness. To investigate this further, we examined just the data for 2010-2019, the most recent complete decade. The graph below shows that the songs in the top 10% of both acousticness and popularity for this decade mostly were released late in the decade.
+
+
 ```{r message = FALSE,warning=FALSE}
-data_2010s_pa %>% 
+p1 <- data_2010s_pa %>% 
   group_by(year) %>% 
   mutate(total = n()) %>% 
   filter(total >= 3) %>% 
@@ -155,8 +158,24 @@ data_2010s_pa %>%
          subtitle = "Years 2010-2019",
          fill = "Year") +
     scale_fill_discrete(labels = c("Other","Billie Eilish"))
+p2 <- data_by_year %>% 
+  filter(year > 2009, year < 2020) %>% 
+  ggplot() +
+    geom_smooth(mapping = aes(x = year, y = popularity)) +
+    scale_x_continuous(breaks = pretty_breaks()) +
+    labs(x = "Year",
+         y = "Popularity", 
+         title = "Popularity over time",
+         subtitle = "Years 2010-2019",
+         fill = "Year")
+grid.arrange(p1,p2)
 ```
+
+
+Notice that the most popular acoustic songs are concentrated toward the end of the decade, and that this concentration is higher than the general increase in popularity over time.
 This suggests that acoustic songs became more popular toward the end of the decade. In an effort to see what may have caused this, we noticed that the increase happened around the time that Billie Eilish started getting media attention. Billie has more than double any other artist's popular acoustic tracks, despite only starting her career in 2016.
+
+
 ```{r message = FALSE,warning=FALSE}
 data_2010s_pa %>% 
   group_by(artists) %>% 
@@ -178,9 +197,12 @@ data_2010s_pa %>%
 
 
 
+
+
 # Explicit factor
 
 Something that has become much more popular in music lately is having explicit lyrics. For example, here is a bar chart showing the percentage of explicit songs in the data by each decade. 
+
 ```{r message = FALSE,warning=FALSE}
 
 musicdata <- read_csv("data.csv")
@@ -200,7 +222,11 @@ musicdata_bydecade %>%
   geom_col(mapping = aes(x = decade, y = explicit_ratio * 100), fill = "darkblue") +
   labs(title = "Percent of Songs that are Explicit by Decade", x = "Decade", y = "Percent of Songs that are Explicit")
 ```
+
+
 Above you can see that explicit songs were very rare, up until about the 1990s, where more than 10% of the songs were explicit. As we look at more current music, say in the 2010s, more than a quarter of the music from the data was explicit. The data shows that more than 40% of music from 2020 was explicit as well. Something to keep in mind here is that we have barely entered the 2020 decade, so there isn't much data in this decade for us to look at. 
+
+
 ```{r message = FALSE,warning=FALSE}
 musicdata_2010s$year <- factor(musicdata_2010s$year, levels = c("2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019"))
 musicdata_2010s %>% 
@@ -210,7 +236,10 @@ musicdata_2010s %>%
   geom_col(mapping = aes(x = year, y = explicit_ratio * 100), fill = "darkblue") +
   labs(title = "Percent of Songs that are Explicit by Year in the 2010s", x = "Year", y = "Percent of Songs that are Explicit")
 ```
+
+
 If we focus specifically on the 2010 decade, we can see that explicit songs became much more prevalent as the decade went on. Something here to notice is that there was actually a peak in 2018, where more than 45% of the songs were explicit. 
+
 
 ```{r message = FALSE,warning=FALSE}
 musicdata$explicityn <- factor(musicdata$explicit, labels = c("0","1"))
@@ -225,6 +254,8 @@ musicdata_explicit %>%
   scale_x_discrete(breaks=seq(1920, 2020, 10)) +
   labs(title = "Average Song Energy by Year", subtitle = "Grouped by whether the song is explicit or not", x = "Year", y = "Energy", color = "Explicit")
 ```
+
+
 Something interesting to look at is the energy of songs throughout the years. Remember that there weren't very many explicit songs before 1990, but after about 1975, the average energy (for each year) of explicit songs has been higher than non-explicit songs. In fact, we can even see that the energy for both explicit and non-explicit songs are tending to be much higher in the more current music. 
 ```{r message = FALSE,warning=FALSE}
 musicdata$explicityn <- factor(musicdata$explicit, labels = c("0","1"))
@@ -239,6 +270,8 @@ musicdata_explicit %>%
   scale_x_discrete(breaks=seq(1920, 2020, 10)) +
   labs(title = "Average Song Popularity by Year", subtitle = "Grouped by whether the song is explicit or not", x = "Year", y = "Popularity", color = "Explicit")
 ```
+
+
 Since explicit music has become more prevalent, we can notice that a song being explicit or not does not have a large affect on the popularity of the music. One might expect that non-explicit songs would be more popular than explicit songs, since they are more "family-" or "radio-friendly". This, however, does not seem to be the case. 
 
 
@@ -259,6 +292,7 @@ spotify_data %>%
     geom_line(mapping = aes(x=year, y=explicit, color = 'explicit')) +
     labs(title = 'Some Clear Trends in the Past Century of Spotify', x = 'year', y = 'value')
 ```
+
 
 Popularity was difficult to predict as its value was taken based on the current day.  This means that it's not as fair for older songs as they currently aren't nearly as popular as they used to be since they are listened to far less with new songs constantly being released on Spotify).
 

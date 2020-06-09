@@ -18,5 +18,7 @@ navbar:
   left:
     - text: "Blogpost"
       href: index.html
+    - text: "Models"
+      href: models.html
     - text: "About Data"
       href: about_data.html
