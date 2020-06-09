@@ -103,12 +103,14 @@ Principle component anaylsis is very useful in the real world to solve industry 
 A screen plot indicates how much variation each principle component explains for the information. 
 In this case, we can choose eight principle components since the variance is close to 0.5 but also maintain the most information.
 
-```{r,eval=TRUE,message=FALSE,warning=FALSE}
+```{r}
 loadings <- pca$rotation
 scores <- pca$x
 dev.new(height=7, width=7)
 biplot(scores[,1:8],loadings[,1:8],xlim = c(-5,5),ylim=c(-5,5),expand=1)
+
 ```
+
 PCA reduces the dimensions by the construction of principle components. PCs displays variation and explains varied influences of original variables. Loadings and scores are used to find out what produces the diffrence among clusters. 
 In this case, we can group acousticness and instrumentalness as factor transmittor; group speechiness,valence and danceability as factor rhythm; group popularity,loudness,energy,liveness and duration_ms as factor activeness. 
 
