@@ -111,5 +111,4 @@ biplot(scores[,1:8],loadings[,1:8],xlim = c(-5,5),ylim=c(-5,5),expand=1)
 ```
 PCA reduces the dimensions by the construction of principle components. PCs displays variation and explains varied influences of original variables. Loadings and scores are used to find out what produces the diffrence among clusters. 
 In this case, we can group acousticness and instrumentalness as factor transmittor; group speechiness,valence and danceability as factor rhythm; group popularity,loudness,energy,liveness and duration_ms as factor activeness. 
-C
 

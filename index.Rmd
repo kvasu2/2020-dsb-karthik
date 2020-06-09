@@ -138,7 +138,7 @@ data_by_year %>%
     labs(x = "Year",
          y = "Acousticness", 
          title = "Acousticness over time",
-         subtitle = "Years 1920-2020")
+         subtitle = "Years 1920-2020") +  theme(legend.position = "none")
 ```
 
 
@@ -278,7 +278,7 @@ Since explicit music has become more prevalent, we can notice that a song being 
 
 
 
-# Trends
+# Conclusion
 
 
 ```{r message = FALSE,warning=FALSE}
