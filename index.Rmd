@@ -158,6 +158,8 @@ p1 <- data_2010s_pa %>%
          subtitle = "Years 2010-2019",
          fill = "Year") +
     scale_fill_discrete(labels = c("Other","Billie Eilish"))
+
+
 p2 <- data_by_year %>% 
   filter(year > 2009, year < 2020) %>% 
   ggplot() +
